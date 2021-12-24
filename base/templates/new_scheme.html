@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <form method="post">
+        {% csrf_token %}
+            <div class="create-scheme-header card-header">
+                <h4>Create Scheme</h4>
+            </div>
+            <div class="card-body">
+                {{ form.non_form_errors }}
+                <div class="creation-form">
+	                <div class="creation-form-label">{{ form.title.label }}</div>
+	                <div class="creation-form-field">
+	                	<input id="{{ form.title.id_for_label }}" class="form-control" type="text" name="{{ form.title.name }}" required placeholder="Title">
+	                </div>
+	            </div>
+                
+                <div style="padding-top:50px; padding-bottom:50px;" class="create-scheme-header">
+                	<h4>Scheme columns</h4>
+            	</div>
+                {{ column_formset.non_form_errors }}
+                {{ column_formset.management_form }}
+                
+                <div id="column-list">  
+	                {% for form in column_formset %}
+	                	<div id="form-0" class="column-creation-form">
+		                    {{ form.name.prefix }}
+		                    <div class="column-creation-block">
+			                    <label class="column-creation-form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+		                		<div class="column-creation-form-field">
+		                			{{ form.name }}
+		                		</div>
+	                		</div>
+
+	                		<div class="column-creation-block">
+			                    <label class="column-creation-form-label" for="{{ form.kind.id_for_label }}">{{ form.kind.label }}</label>
+		                		<div class="column-creation-form-field">
+		                			{{ form.kind }}
+		                		</div>
+	                		</div>
+
+	                		<div class="column-creation-block">
+			                    <label class="column-creation-form-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+		                		<div class="column-creation-form-field">
+		                			{{ form.order }}
+		                		</div>
+	                		</div>
+	            		</div>
+	            	{% endfor %}
+                </div>	
+
+                <div id="empty-form" class='hidden-form'>
+	                    <div class="column-creation-block">
+		                    <label class="column-creation-form-label" for="{{ column_formset.empty_form.name.id_for_label }}">
+		                    	{{ column_formset.empty_form.name.label }}
+		                	</label>
+	                		<div class="column-creation-form-field">
+	                			{{ column_formset.empty_form.name }}
+	                		</div>
+                		</div>
+
+                		<div class="column-creation-block">
+		                    <label class="column-creation-form-label" for="{{ column_formset.empty_form.kind.id_for_label }}">
+		                    	{{ column_formset.empty_form.kind.label }}
+		                    </label>
+	                		<div class="column-creation-form-field">
+	                			{{ column_formset.empty_form.kind }}
+	                		</div>
+                		</div>
+
+                		<div class="column-creation-block">
+		                    <label class="column-creation-form-label" for="{{ column_formset.empty_form.order.id_for_label }}">
+		                    	{{ column_formset.empty_form.order.label }}
+		                	</label>
+	                		<div class="column-creation-form-field">
+	                			{{ column_formset.empty_form.order }}
+	                		</div>
+                		</div>
+                </div>
+                <button id="add-more" type="button">Add column</button>
+            </div>
+        <div class="mt-3 mb-5">
+            <button type="submit" class="px-5 btn btn-info">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+	const addMoreBtn = document.getElementById('add-more')
+	const totalNewForms = document.getElementById('id_column-TOTAL_FORMS')
+	const currentColumnForms = document.getElementsByClassName('column-creation-form')
+	addMoreBtn.addEventListener('click', add_new_form)
+	function add_new_form(event) {
+		if (event) {
+			event.preventDefault()
+		}
+		let currentFormCount = currentColumnForms.length
+		const formCopyTarget = document.getElementById('column-list')
+		const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
+		copyEmptyFormEl.setAttribute('class', 'column-creation-form')
+		copyEmptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+		const regex = new RegExp('__prefix__', 'g')
+		copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)
+		totalNewForms.setAttribute('value', currentFormCount + 1)
+		formCopyTarget.append(copyEmptyFormEl)
+	}
+</script>
+
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="data-schemas">
+	<h3 class="data-schemas-title">Data schemas</h3>
+	<a href="{% url 'new_scheme' %}" class="new-schema-button">New Scheme</a>
+
+	<table class="data-schemas-table table table-striped">
+  		<thead>
+    		<tr>
+		      <th scope="col">#</th>
+		      <th scope="col">Title</th>
+		      <th scope="col">Modified</th>
+		      <th scope="col">Actions</th>
+    		</tr>
+  		</thead>
+  	<tbody>
+    	{% for schema in schemas %}
+    		<tr>
+  				<th scope="row">1</th>
+				<td><a href="{{ schema.get_absolute_url }}">{{ schema.title }}</a></td>
+				<td>{{ schema.modified_date|date:"Y-m-d" }}</td>
+			    <td><a href="{% url 'update_scheme' uuid=schema.uuid %}">Edit scheme</a> / <a href="{% url 'delete_scheme' uuid=schema.uuid %}">Delete</a></td>
+			</tr>
+    	{% endfor %}
+  	</tbody>
+	</table>
+</div>
+{% endblock content %}

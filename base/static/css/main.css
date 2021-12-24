@@ -1,0 +1,118 @@
+.site-name {
+	font-family: "Helvetica Neue", Helvetica;
+	font-size: 20px;
+	line-height: 17px;
+	color: rgba(0, 0, 0, 0.8);
+	margin-right: 20px;
+	text-rendering: optimizeLegibility;
+}
+
+.username {
+	font-family: "Helvetica Neue", Helvetica;
+	font-size: 16px;
+	line-height: 16px;
+	color: rgba(0, 0, 0, 0.3);
+	margin-right: 5px;
+	text-rendering: optimizeLegibility;
+}
+
+.data-schemas {
+	font-family: Helvetica Neue, Helvetica;
+	display: block;
+	margin-left: 10%;
+}
+
+.new-schema-button {
+	background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
+	background-color:#77b55a;
+	border-radius:4px;
+	border:1px solid #4b8f29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Helvetica Neue, Helvetica;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 12px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #5b8a3c;
+	float: right;
+	margin-right: 30%;
+}
+.new-schema-button:hover {
+	background:linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
+	color: rgb(255,255,255);
+	background-color:#72b352;
+}
+.new-schema-button:active {
+	position:relative;
+	top:1px;
+}
+
+.data-schemas-title {
+	display: inline-block;
+}
+
+.data-schemas-table {
+	width: 70%;
+}
+
+.hidden-form {
+	display: none;
+}
+
+.creation-form {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+}
+.creation-form-field>input {
+	width: 40%;
+	height: 38px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	box-sizing: border-box;
+	border-radius: 4px;
+	outline: none;
+	padding-left: 15px;
+	color: #373A3C;
+}
+.column-creation-block {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	display: inline-block;
+	width: 33%;
+}
+
+.column-creation-form {
+	padding-bottom: 10px;
+}
+.column-creation-form-field>input {
+	width: 80%;
+	height: 38px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	box-sizing: border-box;
+	border-radius: 4px;
+	outline: none;
+	padding-left: 15px;
+	color: #373A3C;
+}
+.column-creation-form-field>select {
+	width: 265px;
+	height: 38px;
+	padding-left: 15px;
+
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	box-sizing: border-box;
+	border-radius: 4px;
+	color: #373A3C;
+}
+
+.create-scheme-header {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 24px;
+	color: #373A3C;
+}

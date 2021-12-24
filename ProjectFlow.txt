@@ -3,9 +3,18 @@ CSVFaker development flow
 
 Commit id				Description
 ------------------   24.12.2021   ------------------
-[1.01] 					-Created raw Django Project
+[1.01] 				-Created raw Django Project
 					-Installed packages & requirements.txt
 					-Created 2 apps (CSVFaker_main, base)
-					-Сonfigured linters
+					-Configured linters
 					-Created Git repo
 
+[1.02]				-Redefined default Django-User model 
+					-Created simple templates for login/logout
+					-Created model for Schema, Column with FK to Schema
+					-Defined path for storage .csv files for each Schema
+					-Designed templates: list of user's schemas, new scheme creation page
+					-Created inline formset for Schema+Column
+					-Implemented system to add columns dynamically on scheme creation page
+					-Added inline creation of Schema and multiple Columns for one
+					-Added urls for 'CRUD' of schemas

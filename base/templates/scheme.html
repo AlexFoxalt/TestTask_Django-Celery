@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+{{ scheme.title }}
+{% for column in scheme.column.all %}
+	{{ column.name }}
+{% endfor %}
+{% endblock content %}

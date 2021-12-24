@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<form method="POST">
+	{% csrf_token %}
+	Are you sure you want to delete {{ schema.title }}?
+	<button type="submit">Delete</button>
+</form>
+{% endblock content %}
