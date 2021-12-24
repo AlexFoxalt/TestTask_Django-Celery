@@ -1,1 +1,11 @@
-[Day 1] 24.12.2021
+CSVFaker development flow
+
+
+Commit id				Description
+------------------   24.12.2021   ------------------
+[1.01] 					-Created raw Django Project
+					-Installed packages & requirements.txt
+					-Created 2 apps (CSVFaker_main, base)
+					-Сonfigured linters
+					-Created Git repo
+
