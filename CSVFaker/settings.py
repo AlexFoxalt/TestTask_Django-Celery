@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "base.apps.BaseConfig",
+    "django_extensions",
     "accounts.apps.AccountsConfig",
 ]
 
@@ -30,7 +31,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "CSVFaker_main.urls"
+ROOT_URLCONF = "CSVFaker.urls"
 
 TEMPLATES = [
     {
@@ -48,7 +49,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "CSVFaker_main.wsgi.application"
+WSGI_APPLICATION = "CSVFaker.wsgi.application"
 
 
 # Database
@@ -94,13 +95,24 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), "CSVFaker/base", "static")]
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Celery and Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

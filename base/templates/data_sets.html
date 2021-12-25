@@ -1,0 +1,61 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="data-schemas">
+	<h3 class="data-schemas-title">Data schemas</h3>
+	<form method="POST" action="{% url 'generate-data' %}" class="generate-data-form">
+		{% csrf_token %}
+		<span>Rows:</span>
+		<input type="number" name="quantity">
+		<button type="submit" class="generate-data-button">Generate data</button>
+	</form>
+
+	<table class="data-schemas-table table table-striped" cellpadding="0">
+  		<thead>
+    		<tr>
+		      <th scope="col">#</th>
+		      <th scope="col">Created</th>
+		      <th style="padding-left: 43px;" scope="col">Status</th>
+		      <th scope="col">Action</th>
+    		</tr>
+  		</thead>
+  	<tbody>
+    	{% for scheme in schemas %}
+    		<tr class="data-schemas-list">
+    			<th scope="row"></th>
+				<td>{{ scheme.created_date|date:"Y-m-d" }}</a></td>
+				<td>
+					{% if scheme.is_waiting %}
+						<span class="is-waiting status-bar">waiting</span>
+					{% elif scheme.is_processing %}
+						<span class="is-processing status-bar">processing</span>
+					{% elif scheme.is_ready %}
+						<span class="is-ready status-bar">ready</span>
+					{% elif scheme.is_failed %}
+						<span class="is-failed status-bar">failed</span>
+					{% endif %}
+				</td>
+				<td>
+					{% if scheme.is_ready %} 
+						<a href="{{ scheme.file.url }}" download class="download-file-button" title="Download file">
+							<i class="fa fa-download" aria-hidden="true"></i>
+						</a>
+					{% endif %}
+				</td>			    
+			</tr>
+    	{% endfor %}
+  	</tbody>
+	</table>
+</div>
+
+
+<script>
+	var table = document.getElementsByTagName('table')[0],
+	  rows = table.getElementsByClassName('data-schemas-list'),
+	  text = 'textContent' in document ? 'textContent' : 'innerText';
+
+	for (var i = 0, len = rows.length; i < len; i++) {
+	  rows[i].children[0][text] = i+1;
+	}
+</script>
+{% endblock content %}

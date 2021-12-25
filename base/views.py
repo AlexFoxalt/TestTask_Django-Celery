@@ -1,31 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import (
     ListView,
-    DetailView,
-    DeleteView,
-    UpdateView,
     CreateView,
+    RedirectView
 )
 
-from accounts.forms import LoginForm
 from accounts.models import CustomUser
 from base.forms import SchemeForm, ColumnFormset
 from base.models import Scheme
-
-
-class Login(LoginView):
-    template_name = "login.html"
-    authentication_form = LoginForm
-
-    def get_success_url(self):
-        return reverse_lazy("schemas", kwargs={"uuid": self.request.user.uuid})
-
-
-class Logout(LogoutView):
-    next_page = "login"
+from services.tasks import generate_data
 
 
 class SchemasList(LoginRequiredMixin, ListView):
@@ -42,49 +27,10 @@ class SchemasList(LoginRequiredMixin, ListView):
         return user.scheme.all()
 
 
-class DetailedScheme(DetailView):
-    template_name = "scheme.html"
-    model = Scheme
-
-    def get_object(self, queryset=None):
-        """
-        Return the object the view is displaying.
-        """
-        uuid = self.kwargs.get("uuid")
-        return Scheme.objects.get(uuid=uuid)
-
-
-class UpdateScheme(UpdateView):
-    template_name = "scheme_update.html"
-
-    def get_object(self, queryset=None):
-        """
-        Return the object the view is displaying.
-        """
-        uuid = self.kwargs.get("uuid")
-        return Scheme.objects.get(uuid=uuid)
-
-    def get_success_url(self):
-        return reverse_lazy("schemas", kwargs={"uuid": self.request.user.uuid})
-
-
-class DeleteScheme(DeleteView):
-    template_name = "scheme_confirm_delete.html"
-
-    def get_object(self, queryset=None):
-        """
-        Return the object the view is displaying.
-        """
-        uuid = self.kwargs.get("uuid")
-        return Scheme.objects.get(uuid=uuid)
-
-    def get_success_url(self):
-        return reverse_lazy("schemas", kwargs={"uuid": self.request.user.uuid})
-
-
-class CreateSchemeAndColumn(CreateView):
+class CreateSchemeAndColumn(LoginRequiredMixin, CreateView):
     form_class = SchemeForm
     template_name = "new_scheme.html"
+    login_url = "login"
 
     def get_context_data(self, **kwargs):
         context = super(CreateSchemeAndColumn, self).get_context_data(**kwargs)
@@ -116,4 +62,28 @@ class CreateSchemeAndColumn(CreateView):
     def form_invalid(self, form, column_formset):
         return self.render_to_response(
             self.get_context_data(form=form, column_formset=column_formset)
+        )
+
+
+class DataSets(ListView):
+    template_name = "data_sets.html"
+    model = Scheme
+    context_object_name = "schemas"
+    url = '/'
+
+
+class GenerateData(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return redirect(
+            reverse("datasets", kwargs={"uuid": self.request.user.uuid})
+        )
+
+    def post(self, request, *args, **kwargs):
+        user_id = request.user.pk
+        quantity = request.POST.get("quantity")
+
+        # Celery task run
+        generate_data.delay(user_id, quantity)
+        return redirect(
+            reverse_lazy("datasets", kwargs={"uuid": self.request.user.uuid})
         )

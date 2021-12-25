@@ -19,3 +19,17 @@ Commit id				Description
 					-Added inline creation of Schema and multiple Columns for one
 					-Added urls for 'CRUD' of schemas
 ------------------   25.12.2021   ------------------
+[1.03]				-Installed Celery, and some other modules for development
+					-Created page for generating rows, for all available for user schemas
+					-Designed functions for generating rows on backend, and saving it to unique-named file
+					-Added possibility for downloading last created file for all schemas
+					-Added status bar for every scheme, which displays actual status of generating file on backend
+						There are 4 statuses : 	waiting (waiting for queue in celery)
+												processing (backend processing data)
+												ready (data generated, file can be downloaded)
+												failed (something went wrong in the process of generation)
+					-All auth-logic classes moved to accounts app
+					-Added fields to Column model for setting range for some types of fields
+					-Rebuild big part of CSS for scheme-creation form
+					-Removed some redundant views
+					

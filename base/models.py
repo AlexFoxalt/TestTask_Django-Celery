@@ -7,6 +7,14 @@ from services.generators import generate_uuid, generate_file_path
 
 
 class Scheme(models.Model):
+    class Separator(models.TextChoices):
+        PNT = ".", "Point (.)"
+        COM = ",", "Coma (,)"
+
+    class Character(models.TextChoices):
+        DQT = "\"", "Double-quote (\")"
+        SQT = "'", "Singe-quote (')"
+
     user = models.ForeignKey(
         verbose_name=_("User"),
         to=CustomUser,
@@ -18,6 +26,22 @@ class Scheme(models.Model):
         max_length=50,
         blank=False,
         null=False,
+    )
+    separator = models.CharField(
+        _("Column separator"),
+        max_length=5,
+        blank=False,
+        null=False,
+        choices=Separator.choices,
+        default=Separator.PNT
+    )
+    character = models.CharField(
+        _("String character"),
+        max_length=5,
+        blank=False,
+        null=False,
+        choices=Character.choices,
+        default=Character.DQT
     )
     file = models.FileField(
         _("File"), upload_to=generate_file_path, blank=True, null=True
@@ -43,6 +67,18 @@ class Scheme(models.Model):
 
     def get_absolute_url(self):
         return reverse("scheme", kwargs={"uuid": self.uuid})
+
+    def set_processing(self):
+        self.is_waiting = False
+        self.is_processing = True
+
+    def set_ready(self):
+        self.is_processing = False
+        self.is_ready = True
+
+    def set_failed(self):
+        self.is_processing = False
+        self.failed = True
 
 
 class Column(models.Model):
@@ -73,9 +109,28 @@ class Column(models.Model):
         null=False,
     )
     kind = models.CharField(
-        _("Type"), max_length=20, blank=False, null=False, choices=Kind.choices
+        _("Type"), max_length=20, blank=False, null=False, choices=Kind.choices, default=Kind.FNM
     )
     order = models.SmallIntegerField(_("Order"), blank=False, null=False)
+
+    int_start = models.IntegerField(
+        _("From"),
+        blank=False,
+        null=False,
+        default=0
+    )
+    int_end = models.IntegerField(
+        _("To"),
+        blank=False,
+        null=False,
+        default=1_000_000
+    )
+    txt_sentences_quantity = models.IntegerField(
+        _("Sentences"),
+        blank=False,
+        null=False,
+        default=3
+    )
 
     objects = models.Manager()
 
