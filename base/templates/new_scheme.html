@@ -29,7 +29,7 @@
 	            </div>
                 
                 <div class="create-scheme-header">
-                	<h4>Scheme columns</h4>
+                	<h4>Scheme columns</h4><span id="new-column-help-text">(at least 1 required)</span>
             	</div>
                 {{ column_formset.non_form_errors }}
                 {{ column_formset.management_form }}
@@ -146,16 +146,22 @@
                 		</div>
             		</div>
                 </div>
-                <button id="add-more" type="button">Add column</button>
+                <button id="add-more" type="button">Add</button>
+                <button id="remove-more" type="button">Remove</button>
             </div>
     </form>
 </div>
 
 <script>
 	const addMoreBtn = document.getElementById('add-more')
+	const removeBtn = document.getElementById('remove-more')
 	const totalNewForms = document.getElementById('id_column-TOTAL_FORMS')
 	const currentColumnForms = document.getElementsByClassName('column-creation-form')
+	const columnCreationForm = document.getElementById('column-list')
+	
 	addMoreBtn.addEventListener('click', add_new_form)
+	removeBtn.addEventListener('click', remove_form)
+	
 	function add_new_form(event) {
 		if (event) {
 			event.preventDefault()
@@ -170,6 +176,18 @@
 		totalNewForms.setAttribute('value', currentFormCount + 1)
 		formCopyTarget.append(copyEmptyFormEl)
 	}
+
+	function remove_form(event) {
+		if (event) {
+			event.preventDefault()
+		}
+		var select_tags = columnCreationForm.getElementsByTagName('select');
+		if(select_tags.length > 1) {
+			var elem = document.getElementById(`form-${select_tags.length - 1}`); 
+			elem.parentNode.removeChild(elem);
+		}
+	}
+
 </script>
 <script>
 	document.getElementById('id_column-0-kind').addEventListener('change', function () {
@@ -183,5 +201,4 @@
     document.getElementById('txt-range-fields').style.display = style;
 	});
 </script>
-
 {% endblock content %}

@@ -12,7 +12,7 @@ class Scheme(models.Model):
         COM = ",", "Coma (,)"
 
     class Character(models.TextChoices):
-        DQT = "\"", "Double-quote (\")"
+        DQT = '"', 'Double-quote (")'
         SQT = "'", "Singe-quote (')"
 
     user = models.ForeignKey(
@@ -33,7 +33,7 @@ class Scheme(models.Model):
         blank=False,
         null=False,
         choices=Separator.choices,
-        default=Separator.PNT
+        default=Separator.PNT,
     )
     character = models.CharField(
         _("String character"),
@@ -41,7 +41,7 @@ class Scheme(models.Model):
         blank=False,
         null=False,
         choices=Character.choices,
-        default=Character.DQT
+        default=Character.DQT,
     )
     file = models.FileField(
         _("File"), upload_to=generate_file_path, blank=True, null=True
@@ -109,27 +109,19 @@ class Column(models.Model):
         null=False,
     )
     kind = models.CharField(
-        _("Type"), max_length=20, blank=False, null=False, choices=Kind.choices, default=Kind.FNM
+        _("Type"),
+        max_length=20,
+        blank=False,
+        null=False,
+        choices=Kind.choices,
+        default=Kind.FNM,
     )
     order = models.SmallIntegerField(_("Order"), blank=False, null=False)
 
-    int_start = models.IntegerField(
-        _("From"),
-        blank=False,
-        null=False,
-        default=0
-    )
-    int_end = models.IntegerField(
-        _("To"),
-        blank=False,
-        null=False,
-        default=1_000_000
-    )
+    int_start = models.IntegerField(_("From"), blank=False, null=False, default=0)
+    int_end = models.IntegerField(_("To"), blank=False, null=False, default=1_000_000)
     txt_sentences_quantity = models.IntegerField(
-        _("Sentences"),
-        blank=False,
-        null=False,
-        default=3
+        _("Sentences"), blank=False, null=False, default=3
     )
 
     objects = models.Manager()

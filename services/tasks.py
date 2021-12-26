@@ -19,7 +19,7 @@ POSSIBLE_KIND = {
     "Text": faker.sentences,
     "Integer": faker.random_number,
     "Address": faker.address,
-    "Date": faker.date
+    "Date": faker.date,
 }
 
 
@@ -32,7 +32,7 @@ def generate_data(user_id, quantity):
         title = scheme.title
         columns = sorted(
             list((col.name, col.kind, col.order) for col in scheme.column.all()),
-            key=lambda i: i[2]
+            key=lambda i: i[2],
         )
         if not columns:
             scheme.set_failed()
@@ -40,13 +40,13 @@ def generate_data(user_id, quantity):
         time_now = datetime.now().strftime("%Y%m%d%H%M%S%f")
         path_to_file = f"users_data/user_{user.uuid}/files/{title}_{time_now}.csv"
         os.makedirs(os.path.dirname("media/" + path_to_file), exist_ok=True)
-        with open("media/" + path_to_file, mode='w+', newline='') as file:
+        with open("media/" + path_to_file, mode="w+", newline="") as file:
             field_names = [col[0] for col in columns]
             writer = csv.DictWriter(
                 file,
                 fieldnames=field_names,
                 delimiter=scheme.separator,
-                quotechar=scheme.character
+                quotechar=scheme.character,
             )
             writer.writeheader()
 

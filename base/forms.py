@@ -13,9 +13,18 @@ class SchemeForm(forms.ModelForm):
 class ColumnForm(forms.ModelForm):
     class Meta:
         model = Column
-        fields = ("name", "kind", "int_start", "int_end", "txt_sentences_quantity", "order")
+        fields = (
+            "name",
+            "kind",
+            "int_start",
+            "int_end",
+            "txt_sentences_quantity",
+            "order",
+        )
         widgets = {
-            "kind": forms.Select(choices=Column.Kind.choices, attrs={'class': 'kind-choice-form'}),
+            "kind": forms.Select(
+                choices=Column.Kind.choices, attrs={"class": "kind-choice-form"}
+            )
         }
 
 

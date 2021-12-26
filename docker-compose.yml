@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+  backend:
+    build: ./
+    image: alexfoxalt/csvfaker_app
+    container_name: csv_faker
+    working_dir: /CSVFaker
+    restart: always
+    command: ./commands/start_server.sh
+    ports:
+      - "8000:8008"
+    volumes:
+      - ./accounts:/CSVFaker/accounts
+      - ./base:/CSVFaker/base
+      - ./commands:/CSVFaker/commands
+      - ./CSVFaker:/CSVFaker/CSVFaker
+      - ./services:/CSVFaker/services
+      - ./manage.py:/CSVFaker/manage.py
+      - ./requirements.txt:/CSVFaker/requirements.txt
+      - ./db.sqlite3:/CSVFaker/db.sqlite3
+    env_file:
+      - .env
+
+  redis:
+    image: redis
+    volumes:
+      - ./redis:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./static:/static
+      - ./media:/media
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+    depends_on:
+      - celery
+
+  celery:
+    restart: always
+    build: ./
+    command: celery -A CSVFaker worker -l info -P solo --concurrency 8
+    volumes:
+      - ./accounts:/CSVFaker/accounts
+      - ./base:/CSVFaker/base
+      - ./CSVFaker:/CSVFaker/CSVFaker
+      - ./services:/CSVFaker/services
+      - ./db.sqlite3:/CSVFaker/db.sqlite3
+      - ./media:/CSVFaker/media
+    depends_on:
+      - redis
+
+volumes:
+  media: { }
+  nginx: { }
+  redis: { }

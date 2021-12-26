@@ -1,11 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import (
-    ListView,
-    CreateView,
-    RedirectView
-)
+from django.views.generic import ListView, CreateView, RedirectView
 
 from accounts.models import CustomUser
 from base.forms import SchemeForm, ColumnFormset
@@ -54,7 +51,11 @@ class CreateSchemeAndColumn(LoginRequiredMixin, CreateView):
         for column in column_formset:
             new_column = column.save(commit=False)
             new_column.scheme = self.object
-            column.save()
+            try:
+                column.save()
+            except IntegrityError:
+                self.object.delete()
+                self.form_invalid(form, column_formset)
         return redirect(
             reverse_lazy("schemas", kwargs={"uuid": self.request.user.uuid})
         )
@@ -69,14 +70,12 @@ class DataSets(ListView):
     template_name = "data_sets.html"
     model = Scheme
     context_object_name = "schemas"
-    url = '/'
+    url = "/"
 
 
 class GenerateData(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        return redirect(
-            reverse("datasets", kwargs={"uuid": self.request.user.uuid})
-        )
+        return redirect(reverse("datasets", kwargs={"uuid": self.request.user.uuid}))
 
     def post(self, request, *args, **kwargs):
         user_id = request.user.pk
