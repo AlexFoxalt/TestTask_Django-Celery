@@ -50,7 +50,7 @@ THE CHALLENGE
 
  ✓  Add a “Download” button for datasets available for download.
 
-    Completed application should be deployed to Heroku and be
+ ~  Completed application should be deployed to Heroku and be
     available online (HTTPS should be supported). Please, create a
     test user and provide us with the credentials.
 

@@ -37,6 +37,8 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/static
       - ./media:/media
+      - ./cert.key:/keys/cert.key
+      - ./cert.crt:/keys/cert.crt
     ports:
       - "80:80"
       - "443:443"

@@ -40,3 +40,8 @@ Commit id				Description
                     -Provided https connection to local server
                     -Designed volumes for Docker
                     -Reworked static files path's for deployment
+
+[1.05]              -Project deployed on host-service
+                    -Configured host machine for working with Django + Docker-compose
+                    -Path's to media files reworked for normal downloading from the site
+                    -Test task Done
