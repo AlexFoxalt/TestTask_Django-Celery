@@ -1,6 +1,7 @@
 import csv
 import os
 from datetime import datetime
+from random import randint
 
 from CSVFaker.celery import app
 from accounts.models import CustomUser
@@ -17,7 +18,7 @@ POSSIBLE_KIND = {
     "Phone number": faker.phone_number,
     "Company name": faker.company,
     "Text": faker.sentences,
-    "Integer": faker.random_number,
+    "Integer": randint,
     "Address": faker.address,
     "Date": faker.date,
 }
@@ -31,7 +32,9 @@ def generate_data(user_id, quantity):
         scheme.set_processing()
         title = scheme.title
         columns = sorted(
-            list((col.name, col.kind, col.order) for col in scheme.column.all()),
+            list(
+                (col.name, col.kind, col.order, col.int_start, col.int_end, col.txt_sentences_quantity)
+                for col in scheme.column.all()),
             key=lambda i: i[2],
         )
         if not columns:
@@ -50,11 +53,21 @@ def generate_data(user_id, quantity):
             )
             writer.writeheader()
 
+            field_values = []
+            for column in columns:
+                kind = column[1]
+                value_generator = POSSIBLE_KIND.get(kind)
+                if kind == "Text":
+                    value = value_generator(column[5])
+                elif kind == "Integer":
+                    value = value_generator(column[3], column[4])
+                else:
+                    value = value_generator()
+                field_names.append(value)
+
             for _ in range(int(quantity)):
-                field_values = [POSSIBLE_KIND.get(col[1])() for col in columns]
                 writer.writerow(dict(zip(field_names, field_values)))
 
         scheme.file.name = path_to_file
         scheme.set_ready()
-        scheme.save()
     return f"Success! Created rows: {quantity}"

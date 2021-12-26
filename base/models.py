@@ -71,14 +71,17 @@ class Scheme(models.Model):
     def set_processing(self):
         self.is_waiting = False
         self.is_processing = True
+        self.save()
 
     def set_ready(self):
         self.is_processing = False
         self.is_ready = True
+        self.save()
 
     def set_failed(self):
         self.is_processing = False
         self.failed = True
+        self.save()
 
 
 class Column(models.Model):
