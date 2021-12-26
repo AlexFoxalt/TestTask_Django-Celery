@@ -32,4 +32,4 @@ Commit id				Description
 					-Added fields to Column model for setting range for some types of fields
 					-Rebuild big part of CSS for scheme-creation form
 					-Removed some redundant views
-					
+------------------   26.12.2021   ------------------
