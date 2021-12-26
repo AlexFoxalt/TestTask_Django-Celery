@@ -19,8 +19,6 @@ services:
       - ./manage.py:/CSVFaker/manage.py
       - ./requirements.txt:/CSVFaker/requirements.txt
       - ./db.sqlite3:/CSVFaker/db.sqlite3
-    env_file:
-      - .env
 
   redis:
     image: redis
@@ -42,8 +40,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    env_file:
-      - .env
     depends_on:
       - celery
 
