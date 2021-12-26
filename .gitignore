@@ -1,5 +1,0 @@
-/venv/
-db.sqlite3
-.gitignore
-.flake8
-/media/users_data/
