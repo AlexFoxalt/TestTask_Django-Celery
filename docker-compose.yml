@@ -19,6 +19,7 @@ services:
       - ./manage.py:/CSVFaker/manage.py
       - ./requirements.txt:/CSVFaker/requirements.txt
       - ./db.sqlite3:/CSVFaker/db.sqlite3
+      - ./media:/CSVFaker/media
     env_file:
       - .env
 

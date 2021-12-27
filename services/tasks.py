@@ -3,10 +3,9 @@ import os
 from datetime import datetime
 from random import randint
 
-from CSVFaker.celery import app
-from accounts.models import CustomUser
-
 from faker import Faker
+
+from accounts.models import CustomUser
 
 faker = Faker()
 
@@ -61,21 +60,22 @@ def generate_data(user_id, quantity):
             )
             writer.writeheader()
 
-            field_values = []
-            for column in columns:
-                kind = column[1]
-                value_generator = POSSIBLE_KIND.get(kind)
-                if kind == "Text":
-                    value = value_generator(column[5])
-                elif kind == "Integer":
-                    value = value_generator(column[3], column[4])
-                else:
-                    value = value_generator()
-                field_names.append(value)
-
             for _ in range(int(quantity)):
+                field_values = []
+
+                for column in columns:
+                    kind = column[1]
+                    generator_function = POSSIBLE_KIND.get(kind)
+                    if kind == "Text":
+                        field_values.append(generator_function(column[5]))
+                    elif kind == "Integer":
+                        field_values.append(generator_function(column[3], column[4]))
+                    else:
+                        field_values.append(generator_function())
+
                 writer.writerow(dict(zip(field_names, field_values)))
 
         scheme.file.name = path_to_file
         scheme.set_ready()
+        scheme.save()
     return f"Success! Created rows: {quantity}"
