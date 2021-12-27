@@ -33,8 +33,16 @@ def generate_data(user_id, quantity):
         title = scheme.title
         columns = sorted(
             list(
-                (col.name, col.kind, col.order, col.int_start, col.int_end, col.txt_sentences_quantity)
-                for col in scheme.column.all()),
+                (
+                    col.name,
+                    col.kind,
+                    col.order,
+                    col.int_start,
+                    col.int_end,
+                    col.txt_sentences_quantity,
+                )
+                for col in scheme.column.all()
+            ),
             key=lambda i: i[2],
         )
         if not columns:

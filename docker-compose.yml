@@ -3,7 +3,7 @@ version: "3"
 services:
   backend:
     build: ./
-    image: alexfoxalt/csvfaker_app
+    image: alexfoxalt/alexfoxalt/csv_faker_app
     container_name: csv_faker
     working_dir: /CSVFaker
     restart: always
@@ -19,6 +19,8 @@ services:
       - ./manage.py:/CSVFaker/manage.py
       - ./requirements.txt:/CSVFaker/requirements.txt
       - ./db.sqlite3:/CSVFaker/db.sqlite3
+    env_file:
+      - .env
 
   redis:
     image: redis

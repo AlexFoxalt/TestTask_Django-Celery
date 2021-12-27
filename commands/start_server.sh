@@ -2,4 +2,4 @@
 
 python manage.py migrate
 python manage.py collectstatic
-python manage.py runserver_plus 0:"${WSGI_PORT}"
+python manage.py runserver 0:"${WSGI_PORT}"
