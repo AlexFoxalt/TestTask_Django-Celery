@@ -56,7 +56,7 @@
 ## Results
 
 Tech tasks are in techtask.txt  
-13/13 task done.  
+13/13 tasks done (techtask.txt)  
 11 tasks fully implemented   
 2 tasks not fully implemented  
 
