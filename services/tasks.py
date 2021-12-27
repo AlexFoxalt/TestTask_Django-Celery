@@ -5,6 +5,7 @@ from random import randint
 
 from faker import Faker
 
+from CSVFaker.celery import app
 from accounts.models import CustomUser
 
 faker = Faker()
