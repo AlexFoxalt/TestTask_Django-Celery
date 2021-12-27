@@ -24,7 +24,7 @@
 1. Created page for generating rows, for all available for user schemas
 1. Designed functions for generating rows on backend, and saving it to unique-named file
 1. Added possibility for downloading last created file for all schemas
-1. Added status bar for every scheme, which displays actual status of generating file on backend
+1. Added status bar for every scheme, which displays actual status of generating file on backend.
     There are 4 statuses:
     1. waiting (waiting for queue in celery)
     1. processing (backend processing data)
